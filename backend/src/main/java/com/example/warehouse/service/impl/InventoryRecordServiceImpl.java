@@ -18,13 +18,25 @@ public class InventoryRecordServiceImpl extends ServiceImpl<InventoryRecordMappe
     @Override
     @Transactional
     public void saveRecordAndUpdateStock(InventoryRecord record) {
-        // Save record
         save(record);
-        
-        // Update goods stock
-        int quantity = record.getType().equals("IN") ? record.getQuantity() : -record.getQuantity();
-        boolean success = goodsService.updateStock(record.getGoodsId(), quantity);
-        
+
+        int stockChange;
+        switch (record.getType()) {
+            case "IN":
+                stockChange = record.getQuantity();
+                break;
+            case "OUT":
+                stockChange = -record.getQuantity();
+                break;
+            case "ADJUST":
+                stockChange = record.getQuantity();
+                break;
+            default:
+                throw new RuntimeException("未知记录类型: " + record.getType());
+        }
+
+        boolean success = goodsService.updateStock(record.getGoodsId(), stockChange);
+
         if (!success) {
             throw new RuntimeException("更新库存失败");
         }

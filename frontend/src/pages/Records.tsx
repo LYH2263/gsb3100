@@ -37,13 +37,29 @@ const Records: React.FC = () => {
             title: '类型',
             dataIndex: 'type',
             key: 'type',
-            render: (type: string) => (
-                <Tag color={type === 'IN' ? 'green' : 'red'}>
-                    {type === 'IN' ? '入库' : '出库'}
-                </Tag>
-            )
+            render: (type: string) => {
+                const config: Record<string, { color: string; label: string }> = {
+                    IN: { color: 'green', label: '入库' },
+                    OUT: { color: 'red', label: '出库' },
+                    ADJUST: { color: 'blue', label: '盘点调整' },
+                };
+                const c = config[type] || { color: 'default', label: type };
+                return <Tag color={c.color}>{c.label}</Tag>;
+            }
         },
-        { title: '数量', dataIndex: 'quantity', key: 'quantity' },
+        {
+            title: '数量',
+            dataIndex: 'quantity',
+            key: 'quantity',
+            render: (val: number, record: any) => {
+                if (record.type === 'ADJUST') {
+                    if (val > 0) return <span style={{ color: '#52c41a' }}>+{val} (盘盈)</span>;
+                    if (val < 0) return <span style={{ color: '#ff4d4f' }}>{val} (盘亏)</span>;
+                    return <span>0</span>;
+                }
+                return val;
+            },
+        },
         {
             title: '操作人',
             dataIndex: 'operatorName',
