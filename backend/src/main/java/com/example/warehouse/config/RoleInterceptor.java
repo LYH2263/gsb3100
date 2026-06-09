@@ -24,6 +24,16 @@ public class RoleInterceptor implements HandlerInterceptor {
                 return false;
             }
         }
+
+        // Protect stocktake confirm API
+        if (path.matches(".*/stocktake/\\d+/confirm") || path.matches(".*/api/stocktake/\\d+/confirm")) {
+            if (!"ADMIN".equals(role)) {
+                response.setContentType("application/json;charset=UTF-8");
+                Result<Object> result = Result.error("权限不足，仅管理员可确认盘点");
+                response.getWriter().write(new ObjectMapper().writeValueAsString(result));
+                return false;
+            }
+        }
         
         return true;
     }

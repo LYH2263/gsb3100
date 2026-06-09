@@ -57,3 +57,35 @@ CREATE TABLE IF NOT EXISTS `operation_logs` (
     `ip` VARCHAR(50),
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Stocktake orders table
+CREATE TABLE IF NOT EXISTS `stocktake_orders` (
+    `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `order_no` VARCHAR(50) NOT NULL UNIQUE,
+    `category_id` BIGINT,
+    `status` VARCHAR(20) NOT NULL DEFAULT 'DRAFT',
+    `creator_id` BIGINT NOT NULL,
+    `creator_name` VARCHAR(50),
+    `confirmer_id` BIGINT,
+    `confirmer_name` VARCHAR(50),
+    `remark` TEXT,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `confirmed_at` TIMESTAMP NULL,
+    FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Stocktake order items table
+CREATE TABLE IF NOT EXISTS `stocktake_order_items` (
+    `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `order_id` BIGINT NOT NULL,
+    `goods_id` BIGINT NOT NULL,
+    `goods_name` VARCHAR(100),
+    `goods_code` VARCHAR(50),
+    `system_stock` INT NOT NULL DEFAULT 0,
+    `actual_stock` INT,
+    `diff_quantity` INT,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`order_id`) REFERENCES `stocktake_orders`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`goods_id`) REFERENCES `goods`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
