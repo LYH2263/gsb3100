@@ -14,6 +14,9 @@ api.interceptors.request.use((config: any) => {
         config.headers = config.headers || {};
         config.headers['X-User-Role'] = user.role;
         config.headers['X-User-Name'] = user.username;
+        if (user.id !== undefined && user.id !== null) {
+            config.headers['X-User-Id'] = String(user.id);
+        }
     }
     return config;
 });

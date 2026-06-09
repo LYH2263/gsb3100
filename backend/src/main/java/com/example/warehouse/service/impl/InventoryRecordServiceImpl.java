@@ -21,8 +21,15 @@ public class InventoryRecordServiceImpl extends ServiceImpl<InventoryRecordMappe
         // Save record
         save(record);
         
-        // Update goods stock
-        int quantity = record.getType().equals("IN") ? record.getQuantity() : -record.getQuantity();
+        // Update goods stock: IN/正向，OUT/反向；ADJUST 按 quantity 正负直接调整
+        int quantity;
+        if ("IN".equals(record.getType())) {
+            quantity = record.getQuantity();
+        } else if ("OUT".equals(record.getType())) {
+            quantity = -record.getQuantity();
+        } else {
+            quantity = record.getQuantity();
+        }
         boolean success = goodsService.updateStock(record.getGoodsId(), quantity);
         
         if (!success) {
