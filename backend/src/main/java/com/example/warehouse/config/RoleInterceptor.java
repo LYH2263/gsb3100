@@ -24,6 +24,16 @@ public class RoleInterceptor implements HandlerInterceptor {
                 return false;
             }
         }
+
+        if ((path.startsWith("/api/stocktakes") || path.startsWith("/stocktakes"))
+                && "POST".equals(request.getMethod()) && path.endsWith("/confirm")) {
+            if (!"ADMIN".equals(role)) {
+                response.setContentType("application/json;charset=UTF-8");
+                Result<Object> result = Result.error("权限不足，仅管理员可确认盘点");
+                response.getWriter().write(new ObjectMapper().writeValueAsString(result));
+                return false;
+            }
+        }
         
         return true;
     }
