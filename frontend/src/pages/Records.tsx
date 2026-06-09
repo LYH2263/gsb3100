@@ -37,11 +37,21 @@ const Records: React.FC = () => {
             title: '类型',
             dataIndex: 'type',
             key: 'type',
-            render: (type: string) => (
-                <Tag color={type === 'IN' ? 'green' : 'red'}>
-                    {type === 'IN' ? '入库' : '出库'}
-                </Tag>
-            )
+            render: (type: string) => {
+                let color = 'default';
+                let text = type;
+                if (type === 'IN') {
+                    color = 'green';
+                    text = '入库';
+                } else if (type === 'OUT') {
+                    color = 'red';
+                    text = '出库';
+                } else if (type === 'ADJUST') {
+                    color = 'blue';
+                    text = '盘点调整';
+                }
+                return <Tag color={color}>{text}</Tag>;
+            }
         },
         { title: '数量', dataIndex: 'quantity', key: 'quantity' },
         {
