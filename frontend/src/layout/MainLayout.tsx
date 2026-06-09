@@ -7,6 +7,7 @@ import {
     DatabaseOutlined,
     TagsOutlined,
     HistoryOutlined,
+    AuditOutlined,
     UserOutlined,
     LogoutOutlined,
     LineChartOutlined,
@@ -51,6 +52,11 @@ const MainLayout: React.FC = () => {
             key: '/records',
             icon: <HistoryOutlined />,
             label: <Link to="/records">出入库记录</Link>,
+        },
+        {
+            key: '/stocktake',
+            icon: <AuditOutlined />,
+            label: <Link to="/stocktake">库存盘点</Link>,
         },
         isAdmin && {
             key: '/users',
