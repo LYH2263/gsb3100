@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard'
 import Goods from './pages/Goods'
 import Categories from './pages/Categories'
 import Records from './pages/Records'
+import Stocktake from './pages/Stocktake'
 import Users from './pages/Users'
 import Logs from './pages/Logs'
 
@@ -33,6 +34,7 @@ function App() {
                     <Route path="goods" element={<Goods />} />
                     <Route path="categories" element={<Categories />} />
                     <Route path="records" element={<Records />} />
+                    <Route path="stocktakes" element={<Stocktake />} />
                     <Route path="users" element={<RequireAuth adminOnly><Users /></RequireAuth>} />
                     <Route path="logs" element={<RequireAuth adminOnly><Logs /></RequireAuth>} />
                 </Route>

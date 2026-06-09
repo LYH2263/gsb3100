@@ -10,6 +10,7 @@ import {
     UserOutlined,
     LogoutOutlined,
     LineChartOutlined,
+    AuditOutlined,
 } from '@ant-design/icons';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
@@ -51,6 +52,11 @@ const MainLayout: React.FC = () => {
             key: '/records',
             icon: <HistoryOutlined />,
             label: <Link to="/records">出入库记录</Link>,
+        },
+        {
+            key: '/stocktakes',
+            icon: <AuditOutlined />,
+            label: <Link to="/stocktakes">库存盘点</Link>,
         },
         isAdmin && {
             key: '/users',
